@@ -360,7 +360,7 @@
        USTAWIENIA I ZMIENNE
     ========================================================= */
     const CONFIG = {
-      correctPIN: "1234", // Twój PIN
+      correctPIN: "2012", // Twój PIN
       bgmVolume: 0.15
     };
 
@@ -498,10 +498,10 @@
       if (e) e.stopPropagation();
       soundClick();
       const input = document.getElementById("pinInput");
-      if (input.value.length < 4) {
+      if (input.value.length < 8) {
         input.value += num;
       }
-      if (input.value.length === 4) {
+      if (input.value.length === 8) {
         verifyPin();
       }
     }
