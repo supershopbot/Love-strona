@@ -3,615 +3,723 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dla mojej myszki ❤️</title>
+  <title>Dla Mojej Myszki ❤️</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      font-family: 'Nunito', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
+    h1, h2, h3, .font-heading {
+      font-family: 'Fredoka', cursive;
+    }
+
+    /* Tło z płynnym gradientem */
     body {
+      background: linear-gradient(-45deg, #ff9a9e, #fecfef, #feada6, #f5efef);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
       min-height: 100vh;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ffd6e7, #fff0f6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
       overflow-x: hidden;
-      color: #333;
     }
 
-    .screen {
-      display: none;
-      width: 100%;
-      max-width: 600px;
-      padding: 25px;
-      text-align: center;
-      animation: fadeIn 0.5s ease;
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    .screen.active {
-      display: block;
+    /* Glassmorphism Card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 20px 50px rgba(232, 67, 118, 0.18);
     }
 
-    .card {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 35px 25px;
-      border-radius: 25px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    /* Animowany potrząsanie (Shake) */
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
     }
 
-    h1 {
-      color: #e84376;
-      margin-bottom: 15px;
-      font-size: 32px;
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
     }
 
-    h2 {
-      margin-bottom: 20px;
-      color: #e84376;
-    }
-
-    p {
-      margin-bottom: 20px;
-      font-size: 17px;
-    }
-
-    input {
-      width: 180px;
-      padding: 14px;
-      border: 2px solid #ff9fbd;
-      border-radius: 15px;
-      text-align: center;
-      font-size: 22px;
-      letter-spacing: 8px;
-      outline: none;
-      margin-bottom: 15px;
-    }
-
-    button {
-      border: none;
-      padding: 13px 25px;
-      border-radius: 15px;
-      font-size: 17px;
-      cursor: pointer;
-      transition: 0.2s;
-      margin: 6px;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-    }
-
-    .pink {
-      background: #ff5c91;
-      color: white;
-    }
-
-    .light {
-      background: #ffd1df;
-      color: #9d3157;
-    }
-
-    .error {
-      color: #e74c3c;
-      min-height: 25px;
-      font-size: 14px;
-    }
-
-    .big-love {
-      font-size: 45px;
-      font-weight: bold;
-      color: #e84376;
-      margin: 25px 0;
-      animation: pulse 1s infinite;
-    }
-
-    .question {
-      font-size: 24px;
-      margin: 25px 0;
-      font-weight: bold;
-    }
-
-    .answers {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .answers button {
-      width: 100%;
-      background: #ffe1eb;
-      color: #9d3157;
-    }
-
-    .answers button:hover {
-      background: #ffc4d7;
-    }
-
-    #result {
-      font-size: 25px;
-      font-weight: bold;
-      color: #e84376;
-      margin-top: 25px;
-    }
-
-    .heart {
+    /* Unoszące się serduszka w tle */
+    .floating-bg-heart {
       position: fixed;
+      color: rgba(255, 182, 193, 0.4);
       pointer-events: none;
-      animation: floatUp 4s linear forwards;
-      font-size: 25px;
-    }
-
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      pointer-events: none;
-      animation: confettiFall 3s linear forwards;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes pulse {
-      50% {
-        transform: scale(1.08);
-      }
+      z-index: 0;
+      animation: floatUp 8s linear infinite;
     }
 
     @keyframes floatUp {
-      from {
-        transform: translateY(0);
-        opacity: 1;
-      }
-
-      to {
-        transform: translateY(-100vh);
+      0% {
+        transform: translateY(100vh) scale(0.5) rotate(0deg);
         opacity: 0;
       }
+      20% { opacity: 0.8; }
+      100% {
+        transform: translateY(-10vh) scale(1.2) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Cząstki kliknięcia */
+    .click-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      animation: heartPop 1s ease-out forwards;
+      font-size: 20px;
+    }
+
+    @keyframes heartPop {
+      0% {
+        opacity: 1;
+        transform: scale(0.5) translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.6) translateY(-60px) rotate(20deg);
+      }
+    }
+
+    /* Pulse animation */
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(232, 67, 118, 0.4); }
+      70% { box-shadow: 0 0 0 18px rgba(232, 67, 118, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(232, 67, 118, 0); }
+    }
+
+    /* Konfetti CSS */
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      z-index: 999;
+      pointer-events: none;
+      animation: confettiFall 3.5s ease-out forwards;
     }
 
     @keyframes confettiFall {
-      from {
+      0% {
         transform: translateY(-20px) rotate(0deg);
         opacity: 1;
       }
-
-      to {
-        transform: translateY(100vh) rotate(720deg);
+      100% {
+        transform: translateY(105vh) rotate(720deg);
         opacity: 0;
       }
     }
+
+    /* Kupony Miłosne */
+    .coupon-card {
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .coupon-card:hover {
+      transform: translateY(-5px) scale(1.02);
+    }
+
+    /* Uciekający przycisk */
+    #noBtn {
+      transition: all 0.15s ease-out;
+      position: relative;
+    }
   </style>
 </head>
+<body class="flex items-center justify-center min-h-screen p-4 relative" onclick="spawnClickHeart(event)">
 
-<body>
+  <!-- Kontener na unoszące się serca w tle -->
+  <div id="bgHeartsContainer"></div>
 
-  <!-- EKRAN PIN -->
-  <section id="pinScreen" class="screen active">
-    <div class="card">
-      <h1>🔐 Sekretna strona</h1>
-      <p>Dla mojej myszki ❤️</p>
+  <!-- Przycisk Muzyki w rogu -->
+  <button id="musicToggle" onclick="toggleBGM(event)" class="fixed top-4 right-4 z-50 bg-white/80 backdrop-blur border border-pink-200 text-pink-500 p-3 rounded-full shadow-lg hover:bg-pink-50 transition flex items-center gap-2">
+    <i class="fas fa-music text-lg" id="musicIcon"></i>
+    <span class="text-xs font-bold hidden sm:inline" id="musicText">Muzyka ON</span>
+  </button>
 
-      <input
-        id="pinInput"
-        type="password"
-        maxlength="4"
-        placeholder="••••"
-      >
+  <!-- GŁÓWNA KARTA -->
+  <main class="w-full max-w-md z-10">
+    <div id="mainCard" class="glass-card rounded-3xl p-6 sm:p-8 text-center transition-all duration-500">
+      
+      <!-- ================= EKRAN 1: PIN ================= -->
+      <section id="screenPin" class="space-y-6">
+        <div class="inline-block bg-pink-100 p-4 rounded-full text-pink-500 mb-1 text-3xl">
+          <i class="fas fa-lock" id="lockIcon"></i>
+        </div>
+        
+        <div>
+          <h1 class="text-3xl font-bold text-pink-600 mb-1">Sekretna Strona</h1>
+          <p class="text-gray-600 text-sm">Tylko dla Mojej Myszki ❤️</p>
+        </div>
 
-      <br>
+        <!-- Pole PIN -->
+        <div class="flex justify-center items-center gap-2 my-4">
+          <input type="password" id="pinInput" maxlength="4" readonly placeholder="••••" 
+            class="w-48 text-center text-3xl tracking-[0.5em] font-bold py-3 bg-white/90 border-2 border-pink-300 rounded-2xl text-pink-600 focus:outline-none focus:border-pink-500 shadow-inner">
+        </div>
 
-      <button class="pink" onclick="checkPin()">
-        Otwórz ❤️
-      </button>
+        <!-- Klawiatura numeryczna -->
+        <div class="grid grid-cols-3 gap-2 max-w-[240px] mx-auto">
+          <button onclick="pressNum('1', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">1</button>
+          <button onclick="pressNum('2', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">2</button>
+          <button onclick="pressNum('3', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">3</button>
+          <button onclick="pressNum('4', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">4</button>
+          <button onclick="pressNum('5', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">5</button>
+          <button onclick="pressNum('6', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">6</button>
+          <button onclick="pressNum('7', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">7</button>
+          <button onclick="pressNum('8', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">8</button>
+          <button onclick="pressNum('9', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">9</button>
+          <button onclick="clearPin(event)" class="bg-rose-100 hover:bg-rose-200 text-rose-500 font-bold py-3 rounded-xl shadow border border-rose-200 active:scale-95 transition"><i class="fas fa-backspace"></i></button>
+          <button onclick="pressNum('0', event)" class="bg-white/80 hover:bg-pink-100 text-pink-600 font-bold py-3 rounded-xl shadow border border-pink-100 active:scale-95 transition">0</button>
+          <button onclick="verifyPin(event)" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow active:scale-95 transition"><i class="fas fa-check"></i></button>
+        </div>
 
-      <div id="pinError" class="error"></div>
+        <p id="pinMsg" class="text-rose-500 text-sm font-semibold h-5"></p>
+      </section>
+
+      <!-- ================= EKRAN 2: KOCHASZ MNIE? ================= -->
+      <section id="screenLove" class="hidden space-y-6">
+        <div class="text-5xl animate-bounce">🥹❤️</div>
+        
+        <div>
+          <h2 class="text-2xl font-bold text-gray-800">Myszko...</h2>
+          <p class="text-pink-600 text-xl font-bold mt-2">Czy Ty mnie kochasz?</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4 min-h-[140px] relative" id="loveBtnArea">
+          <!-- TAK -->
+          <button id="yesBtn" onclick="onYesLove(event)" 
+            class="pink-btn pulse-glow bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-xl px-8 py-4 rounded-2xl shadow-lg transition-all transform hover:scale-110 w-full sm:w-auto">
+            TAK! ❤️
+          </button>
+
+          <!-- NIE (Uciekający) -->
+          <button id="noBtn" onmouseenter="runawayNoBtn()" onclick="runawayNoBtn()" 
+            class="bg-gray-200 text-gray-600 font-bold text-sm px-6 py-3 rounded-2xl shadow transition-all w-full sm:w-auto">
+            Nie... 💔
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= EKRAN 3: CELEBRACJA PO "TAK" ================= -->
+      <section id="screenYes" class="hidden space-y-6">
+        <div class="text-6xl animate-pulse">🥰✨</div>
+        
+        <div class="space-y-2">
+          <h2 class="text-3xl font-bold text-pink-600">JA CIEBIE TEŻ<br>MYSZKOOOOO! ❤️</h2>
+          <p class="text-gray-600 font-medium">Wiedziałem! Nie miałaś innego wyjścia 🤭❤️</p>
+        </div>
+
+        <div class="p-4 bg-pink-50/80 rounded-2xl border border-pink-100 text-left space-y-2">
+          <p class="text-sm text-pink-700 leading-relaxed">
+            Jesteś najwspanialszą osobą na świecie! Dziękuję, że jesteś ze mną. Przygotowałem dla Ciebie małe wyzwanie miłosne... 
+          </p>
+        </div>
+
+        <button onclick="startQuiz(event)" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-lg py-4 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+          🎮 Zagraj w Quiz dla Tereski
+        </button>
+      </section>
+
+      <!-- ================= EKRAN 4: QUIZ ================= -->
+      <section id="screenQuiz" class="hidden space-y-5">
+        <!-- Pasek postępu -->
+        <div class="w-full bg-pink-100 rounded-full h-2.5 overflow-hidden">
+          <div id="quizProgressBar" class="bg-pink-500 h-2.5 rounded-full transition-all duration-300" style="width: 20%"></div>
+        </div>
+
+        <div class="flex justify-between items-center text-xs font-bold text-pink-400 uppercase tracking-wider">
+          <span>Gra Miłosna</span>
+          <span id="quizCounter">Pytanie 1/5</span>
+        </div>
+
+        <h3 id="quizQuestionText" class="text-xl font-bold text-gray-800 min-h-[50px] flex items-center justify-center">
+          Ładowanie pytania...
+        </h3>
+
+        <!-- Odpowiedzi -->
+        <div id="quizOptions" class="space-y-3 pt-2">
+          <!-- Przyciski generowane z JS -->
+        </div>
+      </section>
+
+      <!-- ================= EKRAN 5: WYNIKI + KUPONY ================= -->
+      <section id="screenResults" class="hidden space-y-6">
+        <div id="resultIcon" class="text-5xl">🏆</div>
+
+        <div>
+          <h2 id="resultTitle" class="text-2xl font-bold text-pink-600">Koniec Gry!</h2>
+          <div id="resultScore" class="text-3xl font-extrabold text-gray-800 my-2">5/5</div>
+          <p id="resultMsg" class="text-gray-600 text-sm">Tereska, znasz mnie najlepiej na świecie! 😭❤️</p>
+        </div>
+
+        <hr class="border-pink-100">
+
+        <!-- KUPONY MIŁOSNE -->
+        <div class="text-left space-y-3">
+          <h3 class="font-bold text-pink-600 text-center flex items-center justify-center gap-2">
+            <i class="fas fa-gift"></i> Twój Prezent: Kupony Miłosne
+          </h3>
+          <p class="text-xs text-gray-500 text-center">Kliknij kupon, aby go wykorzystać u mnie! 😉</p>
+
+          <div class="grid grid-cols-1 gap-2 pt-2">
+            
+            <div class="coupon-card bg-gradient-to-r from-pink-100 to-rose-100 p-3 rounded-2xl border border-pink-200 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">💆‍♀️</span>
+                <div>
+                  <div class="font-bold text-xs text-pink-800">Darmowy Masaż Pleców / Przytulasy</div>
+                  <div class="text-[10px] text-pink-600">Ważność: Bezterminowo</div>
+                </div>
+              </div>
+              <button onclick="claimCoupon('Masaż / Przytulasy', this)" class="bg-pink-500 text-white text-xs px-3 py-1.5 rounded-xl font-bold hover:bg-pink-600 transition shadow">
+                Użyj
+              </button>
+            </div>
+
+            <div class="coupon-card bg-gradient-to-r from-pink-100 to-rose-100 p-3 rounded-2xl border border-pink-200 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">🎮</span>
+                <div>
+                  <div class="font-bold text-xs text-pink-800">Wspólne granie w Roblox bez limitu</div>
+                  <div class="text-[10px] text-pink-600">Ważność: Bezterminowo</div>
+                </div>
+              </div>
+              <button onclick="claimCoupon('Granie w Roblox', this)" class="bg-pink-500 text-white text-xs px-3 py-1.5 rounded-xl font-bold hover:bg-pink-600 transition shadow">
+                Użyj
+              </button>
+            </div>
+
+            <div class="coupon-card bg-gradient-to-r from-pink-100 to-rose-100 p-3 rounded-2xl border border-pink-200 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">🍕</span>
+                <div>
+                  <div class="font-bold text-xs text-pink-800">Ulubione Jedzonko na mój koszt</div>
+                  <div class="text-[10px] text-pink-600">Ważność: Bezterminowo</div>
+                </div>
+              </div>
+              <button onclick="claimCoupon('Ulubione Jedzonko', this)" class="bg-pink-500 text-white text-xs px-3 py-1.5 rounded-xl font-bold hover:bg-pink-600 transition shadow">
+                Użyj
+              </button>
+            </div>
+
+            <div class="coupon-card bg-gradient-to-r from-pink-100 to-rose-100 p-3 rounded-2xl border border-pink-200 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="text-2xl">👑</span>
+                <div>
+                  <div class="font-bold text-xs text-pink-800">Wygrana w dowolnej sprzeczce</div>
+                  <div class="text-[10px] text-pink-600">Jednorazowy "Słucham Cię Szefie"</div>
+                </div>
+              </div>
+              <button onclick="claimCoupon('Wygrana w sprzeczce', this)" class="bg-pink-500 text-white text-xs px-3 py-1.5 rounded-xl font-bold hover:bg-pink-600 transition shadow">
+                Użyj
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <button onclick="resetApp()" class="text-xs text-pink-400 underline hover:text-pink-600 pt-2 block mx-auto">
+          Zagraj jeszcze raz
+        </button>
+      </section>
+
     </div>
-  </section>
+  </main>
 
-
-  <!-- EKRAN KOCHASZ MNIE -->
-  <section id="loveScreen" class="screen">
-    <div class="card">
-      <h1>Myszko... 🥹❤️</h1>
-
-      <div class="question">
-        Kochasz mnie?
-      </div>
-
-      <button class="pink" onclick="yesLove()">
-        TAK ❤️
-      </button>
-
-      <button class="light" onclick="noLove()">
-        NIE
+  <!-- MODAL / ALERT ZAMIAST ALERT() -->
+  <div id="customModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-xs w-full text-center space-y-4 shadow-2xl animate-bounce-in">
+      <div id="modalIcon" class="text-4xl">💌</div>
+      <p id="modalText" class="font-bold text-gray-800 text-sm"></p>
+      <button onclick="closeModal()" class="w-full bg-pink-500 text-white py-2.5 rounded-xl font-bold hover:bg-pink-600 transition">
+        Super! ❤️
       </button>
     </div>
-  </section>
-
-
-  <!-- EKRAN PO TAK -->
-  <section id="yesScreen" class="screen">
-    <div class="card">
-      <div class="big-love">
-        JA CIEBIE TEŻ<br>
-        MYSZKOOOOO ❤️
-      </div>
-
-      <p>
-        Wiedziałem 🤭❤️
-      </p>
-
-      <button class="pink" onclick="showQuiz()">
-        🎮 Zagraj w grę miłosną
-      </button>
-    </div>
-  </section>
-
-
-  <!-- QUIZ -->
-  <section id="quizScreen" class="screen">
-    <div class="card">
-
-      <h1>🎮 Gra miłosna</h1>
-
-      <p id="questionNumber"></p>
-
-      <div id="quizQuestion" class="question"></div>
-
-      <div id="answers" class="answers"></div>
-
-      <div id="result"></div>
-
-    </div>
-  </section>
-
+  </div>
 
   <script>
+    /* =========================================================
+       USTAWIENIA I ZMIENNE
+    ========================================================= */
+    const CONFIG = {
+      correctPIN: "1234", // Twój PIN
+      bgmVolume: 0.15
+    };
 
-    /* =========================
-       USTAWIENIA
-    ========================= */
+    let soundEnabled = true;
+    let audioCtx = null;
+    let bgmInterval = null;
+    let yesBtnScale = 1;
 
-    // ZMIEŃ PIN TUTAJ
-    const correctPIN = "1234";
-
-
-    /* =========================
-       ZMIANA EKRANÓW
-    ========================= */
-
-    function showScreen(id) {
-      document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-      });
-
-      document.getElementById(id).classList.add("active");
-    }
-
-
-    /* =========================
-       PIN
-    ========================= */
-
-    function checkPin() {
-
-      const pin = document.getElementById("pinInput").value;
-      const error = document.getElementById("pinError");
-
-      if (pin === correctPIN) {
-
-        error.textContent = "";
-
-        showScreen("loveScreen");
-
-        createHearts();
-
-      } else {
-
-        error.textContent = "Nieee 😭 zły PIN";
-
-      }
-    }
-
-
-    /* =========================
-       KOCHASZ MNIE
-    ========================= */
-
-    function yesLove() {
-
-      showScreen("yesScreen");
-
-      createConfetti();
-      createHearts();
-
-    }
-
-
-    function noLove() {
-
-      // Nic nie ucieka 😂
-      // Przycisk normalnie zostaje.
-
-      alert("Dobrze, przyjęto odpowiedź 😭❤️");
-
-    }
-
-
-    /* =========================
-       QUIZ
-    ========================= */
-
+    // Pytania do Quizu
     const questions = [
-
       {
-        question: "Jak najczęściej nazywam Tereskę?",
-        answers: [
-          "Myszką 🐭",
-          "Kaczką 🦆",
-          "Żabką 🐸",
-          "Kotem 🐱"
-        ],
+        question: "Jak najczęściej i najsłodziej nazywam Tereskę?",
+        answers: ["Myszką 🐭❤️", "Kaczką 🦆", "Żabką 🐸", "Kotem 🐱"],
         correct: 0
       },
-
       {
-        question: "W co lubimy razem grać?",
-        answers: [
-          "Roblox 🎮",
-          "Minecraft ⛏️",
-          "FIFA ⚽",
-          "Fortnite 🔫"
-        ],
+        question: "W co uwielbiamy razem grać?",
+        answers: ["Roblox 🎮", "Minecraft ⛏️", "FIFA ⚽", "Fortnite 🔫"],
         correct: 0
       },
-
       {
-        question: "Jak nazywam Tereskę?",
-        answers: [
-          "Myszką ❤️",
-          "Szefem 💼",
-          "Królową ziemniaków 🥔",
-          "NPC 💀"
-        ],
+        question: "Kto tu tak naprawdę rządzi w tym związku?",
+        answers: ["Tereska / Myszka 👑", "Ja (marzenie...) 💭", "Nikt 🤷‍♂️", "Pies 🐶"],
         correct: 0
       },
-
       {
-        question: "Co najbardziej lubię dostawać od Tereski?",
-        answers: [
-          "Zdjęcia 🥹",
-          "Kartki z matematyki 📚",
-          "Mandaty 🚔",
-          "Kamienie 🪨"
-        ],
+        question: "Co najbardziej lubię od Ciebie dostawać?",
+        answers: ["Twoje śliczne zdjęcia 🥹❤️", "Kartkówki z matematyki 📚", "Mandaty 🚔", "Kamienie 🪨"],
         correct: 0
       },
-
       {
-        question: "Jak bardzo ją lubię?",
-        answers: [
-          "Bardzo ❤️",
-          "Trochę",
-          "Nie wiem",
-          "Kim jesteś?"
-        ],
+        question: "Jak bardzo Cię kocham i lubię?",
+        answers: ["Nieskończenie bardzo! 💕", "Troszeczkę", "Średnio", "Kim jesteś?"],
         correct: 0
       }
-
     ];
 
-
-    let currentQuestion = 0;
+    let currentQuestionIndex = 0;
     let score = 0;
 
-
-    function showQuiz() {
-
-      currentQuestion = 0;
-      score = 0;
-
-      showScreen("quizScreen");
-
-      loadQuestion();
-
-    }
-
-
-    function loadQuestion() {
-
-      const question = questions[currentQuestion];
-
-      document.getElementById("questionNumber").textContent =
-        `Pytanie ${currentQuestion + 1} / ${questions.length}`;
-
-      document.getElementById("quizQuestion").textContent =
-        question.question;
-
-      const answersDiv = document.getElementById("answers");
-
-      answersDiv.innerHTML = "";
-
-      document.getElementById("result").textContent = "";
-
-
-      question.answers.forEach((answer, index) => {
-
-        const button = document.createElement("button");
-
-        button.textContent = answer;
-
-        button.onclick = () => checkAnswer(index);
-
-        answersDiv.appendChild(button);
-
-      });
-
-    }
-
-
-    function checkAnswer(index) {
-
-      const question = questions[currentQuestion];
-
-      if (index === question.correct) {
-        score++;
+    /* =========================================================
+       AUDIO SYNTH (WEB AUDIO API - Zero zewnętrznych mp3)
+    ========================================================= */
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
+    }
 
-      currentQuestion++;
+    function playTone(freq, type = 'sine', duration = 0.15, vol = 0.1) {
+      if (!soundEnabled) return;
+      try {
+        initAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) { console.log(e); }
+    }
 
-      if (currentQuestion < questions.length) {
+    // Efekty dźwiękowe
+    function soundClick() { playTone(600, 'sine', 0.08, 0.08); }
+    function soundSuccess() {
+      playTone(523.25, 'triangle', 0.1, 0.12);
+      setTimeout(() => playTone(659.25, 'triangle', 0.1, 0.12), 100);
+      setTimeout(() => playTone(783.99, 'triangle', 0.2, 0.12), 200);
+    }
+    function soundError() {
+      playTone(200, 'sawtooth', 0.2, 0.1);
+    }
+    function soundPop() {
+      playTone(800, 'sine', 0.05, 0.05);
+    }
 
-        loadQuestion();
-
+    // Prosta urocza "melodia w tle"
+    function toggleBGM(e) {
+      if (e) e.stopPropagation();
+      initAudio();
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById("musicIcon");
+      const text = document.getElementById("musicText");
+      
+      if (soundEnabled) {
+        icon.className = "fas fa-music text-lg";
+        text.textContent = "Muzyka ON";
+        startBGM();
       } else {
-
-        finishQuiz();
-
+        icon.className = "fas fa-volume-mute text-lg text-gray-400";
+        text.textContent = "Muzyka OFF";
+        stopBGM();
       }
-
     }
 
+    function startBGM() {
+      if (bgmInterval) return;
+      const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
+      let step = 0;
+      bgmInterval = setInterval(() => {
+        if (soundEnabled) {
+          playTone(notes[step % notes.length], 'sine', 0.4, 0.03);
+          step++;
+        }
+      }, 600);
+    }
 
-    function finishQuiz() {
+    function stopBGM() {
+      if (bgmInterval) {
+        clearInterval(bgmInterval);
+        bgmInterval = null;
+      }
+    }
 
-      document.getElementById("quizQuestion").textContent =
-        "Koniec gry! ❤️";
+    /* =========================================================
+       SYSTEM EKRANÓW & ZMIAN
+    ========================================================= */
+    function switchScreen(fromId, toId) {
+      const from = document.getElementById(fromId);
+      const to = document.getElementById(toId);
+      
+      from.classList.add("hidden");
+      to.classList.remove("hidden");
+      to.classList.add("animate-fade-in");
+    }
 
-      document.getElementById("questionNumber").textContent = "";
+    /* =========================================================
+       EKRAN 1: KLAWIATURA PIN
+    ========================================================= */
+    function pressNum(num, e) {
+      if (e) e.stopPropagation();
+      soundClick();
+      const input = document.getElementById("pinInput");
+      if (input.value.length < 4) {
+        input.value += num;
+      }
+      if (input.value.length === 4) {
+        verifyPin();
+      }
+    }
 
-      document.getElementById("answers").innerHTML = "";
+    function clearPin(e) {
+      if (e) e.stopPropagation();
+      soundClick();
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinMsg").textContent = "";
+    }
 
-      let message = "";
+    function verifyPin(e) {
+      if (e) e.stopPropagation();
+      const input = document.getElementById("pinInput");
+      const msg = document.getElementById("pinMsg");
+      const card = document.getElementById("mainCard");
+
+      if (input.value === CONFIG.correctPIN) {
+        soundSuccess();
+        msg.textContent = "PIN poprawny! ❤️";
+        msg.className = "text-emerald-500 text-sm font-bold h-5";
+        
+        spawnConfetti();
+        spawnHearts(15);
+
+        setTimeout(() => {
+          switchScreen("screenPin", "screenLove");
+        }, 600);
+      } else {
+        soundError();
+        msg.textContent = "Oj nieee! Zły PIN 😭";
+        msg.className = "text-rose-500 text-sm font-semibold h-5";
+        card.classList.add("shake");
+        setTimeout(() => card.classList.remove("shake"), 400);
+        input.value = "";
+      }
+    }
+
+    /* =========================================================
+       EKRAN 2: KOCHASZ MNIE? & UCIEKAJĄCY PRZYCISK
+    ========================================================= */
+    function runawayNoBtn() {
+      soundPop();
+      const noBtn = document.getElementById("noBtn");
+      const yesBtn = document.getElementById("yesBtn");
+
+      // Pobranie losowych pozycji
+      const x = (Math.random() - 0.5) * 200;
+      const y = (Math.random() - 0.5) * 150;
+
+      noBtn.style.transform = `translate(${x}px, ${y}px) scale(0.9)`;
+
+      // Powiększanie przycisku TAK!
+      yesBtnScale += 0.15;
+      yesBtn.style.transform = `scale(${yesBtnScale})`;
+    }
+
+    function onYesLove(e) {
+      if (e) e.stopPropagation();
+      soundSuccess();
+      spawnConfetti();
+      spawnHearts(25);
+
+      switchScreen("screenLove", "screenYes");
+    }
+
+    /* =========================================================
+       EKRAN 4: QUIZ
+    ========================================================= */
+    function startQuiz(e) {
+      if (e) e.stopPropagation();
+      soundClick();
+      currentQuestionIndex = 0;
+      score = 0;
+      switchScreen("screenYes", "screenQuiz");
+      loadQuizQuestion();
+    }
+
+    function loadQuizQuestion() {
+      const q = questions[currentQuestionIndex];
+      document.getElementById("quizCounter").textContent = `Pytanie ${currentQuestionIndex + 1}/${questions.length}`;
+      document.getElementById("quizQuestionText").textContent = q.question;
+      
+      const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+      document.getElementById("quizProgressBar").style.width = `${progress}%`;
+
+      const optionsContainer = document.getElementById("quizOptions");
+      optionsContainer.innerHTML = "";
+
+      q.answers.forEach((ans, index) => {
+        const btn = document.createElement("button");
+        btn.className = "w-full bg-white/90 hover:bg-pink-100 text-pink-700 font-bold py-3.5 px-4 rounded-2xl border border-pink-200 text-left transition flex items-center justify-between shadow-sm hover:shadow active:scale-98";
+        btn.innerHTML = `<span>${ans}</span> <i class="fas fa-chevron-right text-xs opacity-40"></i>`;
+        btn.onclick = (e) => handleAnswer(index, e);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(selectedIndex, e) {
+      if (e) e.stopPropagation();
+      const q = questions[currentQuestionIndex];
+
+      if (selectedIndex === q.correct) {
+        soundSuccess();
+        score++;
+      } else {
+        soundError();
+      }
+
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < questions.length) {
+        loadQuizQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    /* =========================================================
+       EKRAN 5: WYNIKI I KUPONY
+    ========================================================= */
+    function showResults() {
+      switchScreen("screenQuiz", "screenResults");
+      spawnConfetti();
+
+      const scoreEl = document.getElementById("resultScore");
+      const msgEl = document.getElementById("resultMsg");
+      const iconEl = document.getElementById("resultIcon");
+
+      scoreEl.textContent = `${score} / ${questions.length}`;
 
       if (score === questions.length) {
-
-        message =
-          `💖 ${score}/${questions.length}<br><br>
-           TERESKA, TY MNIE ZNASZ ZA DOBRZE 😭❤️`;
-
+        iconEl.textContent = "👑";
+        msgEl.textContent = "TERESKA! Znasz mnie absolutnie bezbłędnie! Kocham Cię najbardziej na świecie! 😭❤️";
       } else if (score >= 3) {
-
-        message =
-          `❤️ ${score}/${questions.length}<br><br>
-           Całkiem dobrze, myszko 🥹`;
-
+        iconEl.textContent = "🥰";
+        msgEl.textContent = "Super wynik Myszko! Bardzo dobrze mnie znasz! ❤️";
       } else {
-
-        message =
-          `😭 ${score}/${questions.length}<br><br>
-           Musimy więcej razem pograć XDDD`;
-
+        iconEl.textContent = "🎮";
+        msgEl.textContent = "Musimy spędzić ze sobą jeszcze więcej czasu i pograć w Roblox! 🤭❤️";
       }
-
-      document.getElementById("result").innerHTML = message;
-
-      createConfetti();
-
     }
 
+    function claimCoupon(title, btnElement) {
+      soundSuccess();
+      spawnHearts(10);
+      
+      btnElement.disabled = true;
+      btnElement.className = "bg-gray-300 text-gray-600 text-xs px-3 py-1.5 rounded-xl font-bold cursor-not-allowed";
+      btnElement.textContent = "Wykorzystano! ❤️";
 
-    /* =========================
-       SERDUSZKA
-    ========================= */
+      openModal(`Odblokowałaś kupon: "${title}"! Zrób screena i wyślij mi go! 📲❤️`);
+    }
 
-    function createHearts() {
+    function resetApp() {
+      location.reload();
+    }
 
-      for (let i = 0; i < 20; i++) {
-
+    /* =========================================================
+       EFEKTY WIZUALNE (SERCA, KONFETTI, MODAL)
+    ========================================================= */
+    function spawnHearts(count = 10) {
+      for (let i = 0; i < count; i++) {
         setTimeout(() => {
-
           const heart = document.createElement("div");
-
-          heart.className = "heart";
-
-          heart.textContent = "❤️";
-
-          heart.style.left =
-            Math.random() * 100 + "vw";
-
-          heart.style.bottom = "-30px";
-
-          heart.style.animationDuration =
-            (3 + Math.random() * 3) + "s";
-
+          heart.className = "floating-bg-heart";
+          heart.innerHTML = ["❤️", "💖", "💕", "🌸"][Math.floor(Math.random() * 4)];
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+          heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
           document.body.appendChild(heart);
 
-          setTimeout(() => {
-            heart.remove();
-          }, 6000);
-
-        }, i * 100);
-
+          setTimeout(() => heart.remove(), 7000);
+        }, i * 150);
       }
-
     }
 
+    function spawnClickHeart(e) {
+      soundPop();
+      const heart = document.createElement("div");
+      heart.className = "click-heart";
+      heart.innerHTML = ["❤️", "💖", "✨", "🌸"][Math.floor(Math.random() * 4)];
+      heart.style.left = (e.clientX - 10) + "px";
+      heart.style.top = (e.clientY - 10) + "px";
+      document.body.appendChild(heart);
 
-    /* =========================
-       KONFETTI
-    ========================= */
-
-    function createConfetti() {
-
-      for (let i = 0; i < 100; i++) {
-
-        const piece = document.createElement("div");
-
-        piece.className = "confetti";
-
-        piece.style.left =
-          Math.random() * 100 + "vw";
-
-        piece.style.top = "-20px";
-
-        piece.style.background =
-          `hsl(${Math.random() * 360}, 80%, 60%)`;
-
-        piece.style.animationDuration =
-          (2 + Math.random() * 2) + "s";
-
-        piece.style.animationDelay =
-          Math.random() * 1 + "s";
-
-        document.body.appendChild(piece);
-
-        setTimeout(() => {
-          piece.remove();
-        }, 5000);
-
-      }
-
+      setTimeout(() => heart.remove(), 1000);
     }
 
+    function spawnConfetti() {
+      const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffffff', '#ffd700'];
+      for (let i = 0; i < 60; i++) {
+        const p = document.createElement("div");
+        p.className = "confetti-piece";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        p.style.animationDelay = (Math.random() * 0.5) + "s";
+        document.body.appendChild(p);
 
-    /* =========================
-       ENTER = PIN
-    ========================= */
-
-    document.getElementById("pinInput").addEventListener("keydown", function(event) {
-
-      if (event.key === "Enter") {
-        checkPin();
+        setTimeout(() => p.remove(), 4000);
       }
+    }
 
-    });
+    function openModal(text) {
+      document.getElementById("modalText").textContent = text;
+      document.getElementById("customModal").classList.remove("hidden");
+    }
 
+    function closeModal() {
+      soundClick();
+      document.getElementById("customModal").classList.add("hidden");
+    }
+
+    // Startowe serca w tle
+    window.onload = () => {
+      spawnHearts(12);
+    };
   </script>
-
 </body>
 </html>
